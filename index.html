@@ -10,8 +10,7 @@
     const circles = document.querySelectorAll('.circle');
     circles.forEach(circle => {
       circle.addEventListener('click', function() {
-        this.classList.toggle('ring-red-500');
-        this.classList.toggle('ring-black');
+        this.classList.toggle('border-red-500');
       });
     });
   });
@@ -20,59 +19,66 @@
   .circle {
     width: 100px;
     height: 100px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 1rem;
-    cursor: pointer;
     border: 20px solid black;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 10px;
+    cursor: pointer;
   }
-  .ring-red-500 {
+  .circle.border-red-500 {
     border-color: red;
   }
-  .logo {
+  .bold-center {
     font-weight: bold;
     text-align: center;
-    margin-bottom: 2rem;
   }
-  .footer {
+  .footer-datetime {
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 20px;
   }
 </style>
 </head>
 <body class="bg-white text-black">
 <div class="container mx-auto px-4 py-8">
-  <div class="logo">
-    <p>Hemingways</p>
-    <p>LINKING PEOPLE WITH BRANDS</p>
+  <div class="text-center mb-8">
+    <div class="text-3xl font-bold mb-2">Hemingways</div>
+    <div class="text-xl">LINKING PEOPLE WITH BRANDS</div>
   </div>
-  <h2 class="text-center font-bold mb-4">Last One To Leave - Melmerby DC?</h2>
-  <p class="text-center mb-4">Click to show this section locked up.<br>Set Alarm if your section is last to close</p>
-  <div class="flex justify-center items-center">
-    <div class="circle ring-black" id="circle-w8">
-      <span>W8 Main<br>New</span>
-    </div>
-    <div class="circle ring-black" id="circle-w4">
-      <span>W4<br>Warehouse</span>
-    </div>
-    <div class="circle ring-black" id="circle-w7">
-      <span>W7<br>Glass</span>
-    </div>
+
+  <div class="bold-center mb-8">
+    <p>Last One To Leave - Melmerby DC?</p>
+    <p>Click to show this section locked up.</p>
+    <p>Set Alarm if your section is last to close</p>
   </div>
-  <div class="footer">
-    <span id="date-time">Day | Month | Year | Time (GMT)</span>
+
+  <div class="flex justify-center items-center mb-8">
+    <div class="circle" id="circle-w8"></div>
+    <div class="circle" id="circle-w4"></div>
+    <div class="circle" id="circle-w7"></div>
+  </div>
+
+  <div class="flex justify-center items-center mb-8">
+    <span class="mx-4">W8 Main New</span>
+    <span class="mx-4">W4 Warehouse</span>
+    <span class="mx-4">W7 Glass</span>
+  </div>
+
+  <div class="footer-datetime">
+    <span id="day"></span> |
+    <span id="month"></span> |
+    <span id="year"></span> |
+    <span id="time"></span>
   </div>
 </div>
+
 <script>
   function updateDateTime() {
     const now = new Date();
-    const day = String(now.getUTCDate()).padStart(2, '0');
-    const month = String(now.getUTCMonth() + 1).padStart(2, '0');
-    const year = now.getUTCFullYear();
-    const time = now.toUTCString().match(/(\d{2}:\d{2}:\d{2})/)[0];
-    document.getElementById('date-time').textContent = `${day} | ${month} | ${year} | ${time} (GMT)`;
+    const options = { hour12: false };
+    document.getElementById('day').textContent = now.getDate().toString().padStart(2, '0');
+    document.getElementById('month').textContent = (now.getMonth() + 1).toString().padStart(2, '0');
+    document.getElementById('year').textContent = now.getFullYear();
+    document.getElementById('time').textContent = now.toLocaleTimeString('en-GB', options);
   }
   setInterval(updateDateTime, 1000);
   updateDateTime();
