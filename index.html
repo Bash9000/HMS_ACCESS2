@@ -1,0 +1,70 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hemingways - Linking People with Brands</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const circles = document.querySelectorAll('.circle');
+    circles.forEach(circle => {
+      circle.addEventListener('click', function () {
+        circles.forEach(c => c.classList.remove('border-red-500'));
+        this.classList.add('border-red-500');
+      });
+    });
+  });
+</script>
+<style>
+  .circle {
+    width: 100px;
+    height: 100px;
+    border: 20px solid black;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  .circle.border-red-500 {
+    border-color: red;
+  }
+  .bold-center {
+    font-weight: bold;
+    text-align: center;
+  }
+  .footer-text {
+    text-align: center;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body class="bg-white text-black">
+<div class="container mx-auto px-4">
+  <header class="text-center py-6">
+    <div class="text-3xl font-bold mb-2">Hemingways</div>
+    <div class="uppercase tracking-wide text-sm mb-4">Linking People with Brands</div>
+    <div class="bold-center mb-4">Last One To Leave - Melmerby DC?</div>
+    <button class="bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded mb-4">
+      Click to show this section locked up.
+    </button>
+    <button class="bg-gray-200 hover:bg-gray-300 text-black font-bold py-2 px-4 rounded">
+      Set Alarm if your section is last to close
+    </button>
+  </header>
+  <main class="text-center my-8">
+    <div class="circle" id="circle1"></div>
+    <div class="circle" id="circle2"></div>
+    <div class="circle" id="circle3"></div>
+    <div class="flex justify-center items-center mt-4">
+      <span class="mx-2">W8 Main New</span>
+      <span class="mx-2">W4 Warehouse</span>
+      <span class="mx-2">W7 Glass</span>
+    </div>
+  </main>
+  <footer class="footer-text">
+    <div>Day | Month | Year | Time (GMT)</div>
+  </footer>
+</div>
+</body>
+</html>
