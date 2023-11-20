@@ -5,83 +5,87 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hemingways - Linking People with Brands</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-    const circles = document.querySelectorAll('.circle');
-    circles.forEach(circle => {
-      circle.addEventListener('click', function() {
-        this.classList.toggle('border-red-500');
-      });
-    });
-  });
-</script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@^2.0.0"></script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 <style>
   .circle {
     width: 100px;
     height: 100px;
-    border: 20px solid black;
     border-radius: 50%;
+    border: 20px solid black;
     display: inline-block;
     margin: 0 10px;
     cursor: pointer;
   }
-  .circle.border-red-500 {
+  .circle.red {
     border-color: red;
   }
   .bold-center {
     font-weight: bold;
     text-align: center;
   }
-  .footer-datetime {
-    text-align: center;
-    margin-top: 20px;
-  }
 </style>
 </head>
-<body class="bg-white text-black">
+<body class="bg-white text-black font-sans">
+
 <div class="container mx-auto px-4 py-8">
   <div class="text-center mb-8">
-    <div class="text-3xl font-bold mb-2">Hemingways</div>
+    <div class="text-3xl font-bold">Hemingways</div>
     <div class="text-xl">LINKING PEOPLE WITH BRANDS</div>
   </div>
 
   <div class="bold-center mb-8">
-    <p>Last One To Leave - Melmerby DC?</p>
-    <p>Click to show this section locked up.</p>
-    <p>Set Alarm if your section is last to close</p>
+    Last One To Leave - Melmerby DC?
+  </div>
+
+  <div class="text-center mb-8">
+    Click to show this section locked up.<br>
+    Set Alarm if your section is last to close
   </div>
 
   <div class="flex justify-center items-center mb-8">
-    <div class="circle" id="circle-w8"></div>
-    <div class="circle" id="circle-w4"></div>
-    <div class="circle" id="circle-w7"></div>
+    <div id="circle1" class="circle" data-session-key="circle1"></div>
+    <div id="circle2" class="circle" data-session-key="circle2"></div>
+    <div id="circle3" class="circle" data-session-key="circle3"></div>
   </div>
 
-  <div class="flex justify-center items-center mb-8">
-    <span class="mx-4">W8 Main New</span>
-    <span class="mx-4">W4 Warehouse</span>
-    <span class="mx-4">W7 Glass</span>
+  <div class="flex justify-center space-x-4 mb-8">
+    <div>W8 Main New</div>
+    <div>W4 Warehouse</div>
+    <div>W7 Glass</div>
   </div>
 
-  <div class="footer-datetime">
-    <span id="day"></span> |
-    <span id="month"></span> |
-    <span id="year"></span> |
-    <span id="time"></span>
+  <div class="text-center">
+    <div id="datetime" class="text-lg"></div>
   </div>
 </div>
 
 <script>
+  const circles = document.querySelectorAll('.circle');
+  circles.forEach(circle => {
+    const sessionKey = circle.dataset.sessionKey;
+    if (sessionStorage.getItem(sessionKey) === 'red') {
+      circle.classList.add('red');
+    }
+
+    circle.addEventListener('click', () => {
+      circle.classList.toggle('red');
+      if (circle.classList.contains('red')) {
+        sessionStorage.setItem(sessionKey, 'red');
+      } else {
+        sessionStorage.removeItem(sessionKey);
+      }
+    });
+  });
+
   function updateDateTime() {
-    const now = new Date();
-    const options = { hour12: false };
-    document.getElementById('day').textContent = now.getDate().toString().padStart(2, '0');
-    document.getElementById('month').textContent = (now.getMonth() + 1).toString().padStart(2, '0');
-    document.getElementById('year').textContent = now.getFullYear();
-    document.getElementById('time').textContent = now.toLocaleTimeString('en-GB', options);
+    const { DateTime } = luxon;
+    const now = DateTime.now().setZone('GMT');
+    document.getElementById('datetime').textContent = now.toFormat('dd | LLL | yyyy | HH:mm:ss (\'GMT\')');
   }
   setInterval(updateDateTime, 1000);
   updateDateTime();
 </script>
+
 </body>
 </html>
