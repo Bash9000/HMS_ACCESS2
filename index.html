@@ -5,87 +5,77 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hemingways - Linking People with Brands</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/luxon@^2.0.0"></script>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const circles = document.querySelectorAll('.circle');
+    circles.forEach(circle => {
+      circle.addEventListener('click', function() {
+        this.classList.toggle('ring-red-500');
+        this.classList.toggle('ring-black');
+      });
+    });
+  });
+</script>
 <style>
   .circle {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    border: 20px solid black;
-    display: inline-block;
-    margin: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 1rem;
     cursor: pointer;
+    border: 20px solid black;
   }
-  .circle.red {
+  .ring-red-500 {
     border-color: red;
   }
-  .bold-center {
+  .logo {
     font-weight: bold;
     text-align: center;
+    margin-bottom: 2rem;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 2rem;
   }
 </style>
 </head>
-<body class="bg-white text-black font-sans">
-
+<body class="bg-white text-black">
 <div class="container mx-auto px-4 py-8">
-  <div class="text-center mb-8">
-    <div class="text-3xl font-bold">Hemingways</div>
-    <div class="text-xl">LINKING PEOPLE WITH BRANDS</div>
+  <div class="logo">
+    <p>Hemingways</p>
+    <p>LINKING PEOPLE WITH BRANDS</p>
   </div>
-
-  <div class="bold-center mb-8">
-    Last One To Leave - Melmerby DC?
+  <h2 class="text-center font-bold mb-4">Last One To Leave - Melmerby DC?</h2>
+  <p class="text-center mb-4">Click to show this section locked up.<br>Set Alarm if your section is last to close</p>
+  <div class="flex justify-center items-center">
+    <div class="circle ring-black" id="circle-w8">
+      <span>W8 Main<br>New</span>
+    </div>
+    <div class="circle ring-black" id="circle-w4">
+      <span>W4<br>Warehouse</span>
+    </div>
+    <div class="circle ring-black" id="circle-w7">
+      <span>W7<br>Glass</span>
+    </div>
   </div>
-
-  <div class="text-center mb-8">
-    Click to show this section locked up.<br>
-    Set Alarm if your section is last to close
-  </div>
-
-  <div class="flex justify-center items-center mb-8">
-    <div id="circle1" class="circle" data-session-key="circle1"></div>
-    <div id="circle2" class="circle" data-session-key="circle2"></div>
-    <div id="circle3" class="circle" data-session-key="circle3"></div>
-  </div>
-
-  <div class="flex justify-center space-x-4 mb-8">
-    <div>W8 Main New</div>
-    <div>W4 Warehouse</div>
-    <div>W7 Glass</div>
-  </div>
-
-  <div class="text-center">
-    <div id="datetime" class="text-lg"></div>
+  <div class="footer">
+    <span id="date-time">Day | Month | Year | Time (GMT)</span>
   </div>
 </div>
-
 <script>
-  const circles = document.querySelectorAll('.circle');
-  circles.forEach(circle => {
-    const sessionKey = circle.dataset.sessionKey;
-    if (sessionStorage.getItem(sessionKey) === 'red') {
-      circle.classList.add('red');
-    }
-
-    circle.addEventListener('click', () => {
-      circle.classList.toggle('red');
-      if (circle.classList.contains('red')) {
-        sessionStorage.setItem(sessionKey, 'red');
-      } else {
-        sessionStorage.removeItem(sessionKey);
-      }
-    });
-  });
-
   function updateDateTime() {
-    const { DateTime } = luxon;
-    const now = DateTime.now().setZone('GMT');
-    document.getElementById('datetime').textContent = now.toFormat('dd | LLL | yyyy | HH:mm:ss (\'GMT\')');
+    const now = new Date();
+    const day = String(now.getUTCDate()).padStart(2, '0');
+    const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+    const year = now.getUTCFullYear();
+    const time = now.toUTCString().match(/(\d{2}:\d{2}:\d{2})/)[0];
+    document.getElementById('date-time').textContent = `${day} | ${month} | ${year} | ${time} (GMT)`;
   }
   setInterval(updateDateTime, 1000);
   updateDateTime();
 </script>
-
 </body>
 </html>
